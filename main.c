@@ -6,18 +6,20 @@ const int screenHeight = 720;
 
 int main() {
 
-    InitWindow(screenWidth, screenHeight, "basic window"); // Window Initialisation
+    InitWindow(screenWidth, screenHeight, "basic window");
+    SetWindowTitle("Pong");
+    HideCursor();
 
-    while (!WindowShouldClose()) { // Game Loop
+    while (!WindowShouldClose()) {
 
         BeginDrawing();
 
-            ClearBackground(RAYWHITE); // Background Color
+            ClearBackground(BLACK);
 
         EndDrawing();
     }
 
-    CloseWindow(); // WIndow Closing
+    CloseWindow();
 
     return 0;
 }
