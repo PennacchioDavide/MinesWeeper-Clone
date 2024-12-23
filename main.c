@@ -23,10 +23,10 @@ int main() {
     float ballRadius = 17.5; // Circle Radius
     Vector2 ballSpeed = {5.0f, 4.0f}; // Ball Speed
 
-    while (!WindowShouldClose()) {
+    bool winRight = false;
+    bool winLeft = false;
 
-        bool winRight = false;
-        bool winLeft = false;
+    while (!WindowShouldClose()) {
 
         // Input
         if (IsKeyDown(KEY_UP) && !CheckCollisionRecs(RightPaddle, TopWhite)) {
@@ -40,6 +40,10 @@ int main() {
         }
         if (IsKeyDown(KEY_S) && !CheckCollisionRecs(LeftPaddle, BotWhite)) {
             LeftPaddle.y += 20;
+        }
+        if ((winRight || winLeft) && IsKeyPressed(KEY_SPACE)) {
+            winRight = false;
+            winLeft = false;
         }
 
         // Ball Movement
@@ -65,7 +69,6 @@ int main() {
         }
 
         // Red Walls
-
         if (CheckCollisionCircleRec(ballPos, ballRadius, LeftRed)) {
             winRight = true;
         }
@@ -87,6 +90,15 @@ int main() {
                 DrawRectangleRec(RightPaddle, RAYWHITE);
                 DrawRectangleRec(LeftPaddle, RAYWHITE);
                 DrawCircleV(ballPos, ballRadius, RAYWHITE);
+            }
+
+            if (winRight) {
+                DrawText("Right Side Wins", 350, 335, 50, RAYWHITE);
+                DrawText("Press Space To Play Again", 400, 400, 20, RAYWHITE);
+            }
+            if (winLeft) {
+                DrawText("Left Side Wins", 350, 335, 50, RAYWHITE);
+                DrawText("Press Space To Play Again", 400, 400, 20, RAYWHITE);
             }
 
         EndDrawing();
