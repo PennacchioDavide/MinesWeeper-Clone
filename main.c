@@ -19,24 +19,61 @@ int main() {
     Rectangle LeftPaddle = {50, 310, 20, 120}; // Left Paddle
     Rectangle RightPaddle = {1010, 310, 20, 120}; // Right Paddle
 
-    Vector2 circlePos = { 526.25, 351.25 }; // Circle Position
-    float circleRadius = 17.5; // Circle Radius
+    Vector2 ballPos = { 526.25, 351.25 }; // Circle Position
+    float ballRadius = 17.5; // Circle Radius
+    Vector2 ballSpeed = {5.0f, 4.0f}; // Ball Speed
 
     while (!WindowShouldClose()) {
 
+        bool winRight = false;
+        bool winLeft = false;
+
+        // Input
         if (IsKeyDown(KEY_UP) && !CheckCollisionRecs(RightPaddle, TopWhite)) {
-            RightPaddle.y -= 30;
+            RightPaddle.y -= 20;
         }
         if (IsKeyDown(KEY_DOWN) && !CheckCollisionRecs(RightPaddle, BotWhite)) {
-            RightPaddle.y += 30;
+            RightPaddle.y += 20;
         }
         if (IsKeyDown(KEY_W) && !CheckCollisionRecs(LeftPaddle, TopWhite)) {
-            LeftPaddle.y -= 30;
+            LeftPaddle.y -= 20;
         }
         if (IsKeyDown(KEY_S) && !CheckCollisionRecs(LeftPaddle, BotWhite)) {
-            LeftPaddle.y += 30;
+            LeftPaddle.y += 20;
         }
 
+        // Ball Movement
+        ballPos.x += ballSpeed.x;
+        ballPos.y += ballSpeed.y;
+        
+        // Checking Ball Collision
+
+        // White Walls
+        if (CheckCollisionCircleRec(ballPos, ballRadius, BotWhite)) {
+            ballSpeed.y *= -1;
+        }
+        if (CheckCollisionCircleRec(ballPos, ballRadius, TopWhite)) {
+            ballSpeed.y *= -1;
+        }
+
+        // Paddles
+        if (CheckCollisionCircleRec(ballPos, ballRadius, LeftPaddle)) {
+            ballSpeed.x *= -1;
+        }
+        if (CheckCollisionCircleRec(ballPos, ballRadius, RightPaddle)) {
+            ballSpeed.x *= -1;
+        }
+
+        // Red Walls
+
+        if (CheckCollisionCircleRec(ballPos, ballRadius, LeftRed)) {
+            winRight = true;
+        }
+        if (CheckCollisionCircleRec(ballPos, ballRadius, RightRed)) {
+            winLeft = true;
+        }
+
+        // Drawing on Screen
         BeginDrawing();
 
             ClearBackground(BLACK);
@@ -45,13 +82,12 @@ int main() {
             DrawRectangleRec(BotWhite, RAYWHITE);
             DrawRectangleRec(LeftRed, RED);
             DrawRectangleRec(RightRed, RED);
-            DrawRectangleRec(RightPaddle, RAYWHITE);
-            DrawRectangleRec(LeftPaddle, RAYWHITE);
 
-            DrawCircleV(circlePos, circleRadius, RAYWHITE);
-
-           
-
+            if (!winRight && !winLeft) {
+                DrawRectangleRec(RightPaddle, RAYWHITE);
+                DrawRectangleRec(LeftPaddle, RAYWHITE);
+                DrawCircleV(ballPos, ballRadius, RAYWHITE);
+            }
 
         EndDrawing();
     }
