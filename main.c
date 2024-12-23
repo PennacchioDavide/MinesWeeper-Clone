@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 const int screenWidth = 1080;
 const int screenHeight = 720;
@@ -25,6 +26,14 @@ int main() {
 
     bool winRight = false;
     bool winLeft = false;
+
+    typedef struct Score {
+        int right;
+        int left;
+    }Score;
+     
+    Score score = {0, 0};
+    char scoreText[50];
 
     while (!WindowShouldClose()) {
 
@@ -69,11 +78,13 @@ int main() {
         }
 
         // Red Walls
-        if (CheckCollisionCircleRec(ballPos, ballRadius, LeftRed)) {
+        if (CheckCollisionCircleRec(ballPos, ballRadius, LeftRed) && !winRight) {
             winRight = true;
+            score.right += 1;
         }
-        if (CheckCollisionCircleRec(ballPos, ballRadius, RightRed)) {
+        if (CheckCollisionCircleRec(ballPos, ballRadius, RightRed) && !winLeft) {
             winLeft = true;
+            score.left += 1;
         }
 
         // Drawing on Screen
@@ -95,10 +106,15 @@ int main() {
             if (winRight) {
                 DrawText("Right Side Wins", 350, 335, 50, RAYWHITE);
                 DrawText("Press Space To Play Again", 400, 400, 20, RAYWHITE);
+                snprintf(scoreText, sizeof(scoreText), "Score\n  %d | %d", score.left, score.right);
+                DrawText(scoreText, 470, 100, 50, RAYWHITE);
             }
             if (winLeft) {
                 DrawText("Left Side Wins", 350, 335, 50, RAYWHITE);
                 DrawText("Press Space To Play Again", 400, 400, 20, RAYWHITE);
+                snprintf(scoreText, sizeof(scoreText), "Score\n  %d | %d", score.left, score.right);
+                DrawText(scoreText, 470, 100, 50, RAYWHITE);
+                
             }
 
         EndDrawing();
