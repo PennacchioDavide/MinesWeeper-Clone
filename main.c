@@ -104,12 +104,16 @@ int main() {
             }
 
             if (winRight) {
+                ballPos.x = 526.25;
+                ballPos.y = 351.25; 
                 DrawText("Right Side Wins", 350, 335, 50, RAYWHITE);
                 DrawText("Press Space To Play Again", 400, 400, 20, RAYWHITE);
                 snprintf(scoreText, sizeof(scoreText), "Score\n  %d | %d", score.left, score.right);
                 DrawText(scoreText, 470, 100, 50, RAYWHITE);
             }
             if (winLeft) {
+                ballPos.x = 526.25;
+                ballPos.y = 351.25;
                 DrawText("Left Side Wins", 350, 335, 50, RAYWHITE);
                 DrawText("Press Space To Play Again", 400, 400, 20, RAYWHITE);
                 snprintf(scoreText, sizeof(scoreText), "Score\n  %d | %d", score.left, score.right);
